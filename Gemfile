@@ -7,6 +7,7 @@ gem 'sinatra-activerecord'
 gem 'pg'
 
 gem 'squeel'
+gem 'mechanize'
 
 gem 'unicorn'
 gem 'foreman'
