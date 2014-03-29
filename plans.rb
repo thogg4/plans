@@ -2,11 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
-ActiveRecord::Base.establish_connection({
-  adapter: 'postgresql',
-  host: ENV['DATABASE_URL'],
-  database: 'plans'
-})
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
 
 Dir.glob('./models/*.rb').each {|file| require_relative file }
 
