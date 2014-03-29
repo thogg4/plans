@@ -2,7 +2,8 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+config = ENV['RACK_ENV'] == 'production' ? ENV['DATABASE_URL'] : {adapter: 'postgresql', host: 'localhost', database: 'plans'}
+ActiveRecord::Base.establish_connection(config)
 
 Dir.glob('./models/*.rb').each {|file| require_relative file }
 

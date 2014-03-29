@@ -1,5 +1,5 @@
 <div class='row-fluid'>
   <% @plans.each do |plan| %>
-    <a href='/p/<%= plan.link %>' class='pops' rel='popover' data-placement='top' data-trigger='hover' data-content="<img src='<%= plan.image %>'/>"><%= plan.title %></a>
+    <a href='/p/<%= plan.link %>' class='pops' rel='popover' data-placement='right' data-trigger='hover' data-content="<img src='<%= plan.image %>'/>"><%= plan.title %></a>
   <% end %>
 </div>

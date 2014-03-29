@@ -1,10 +1,11 @@
 require 'mechanize'
 require 'active_record'
 
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+config = ENV['RACK_ENV'] == 'production' ? ENV['DATABASE_URL'] : {adapter: 'postgresql', host: 'localhost', database: 'plans'}
+
+ActiveRecord::Base.establish_connection(config)
 
 class Plan < ActiveRecord::Base
-
 end
 
 @m = Mechanize.new
@@ -58,6 +59,29 @@ def link_iterator
   end
 end
 
+def set_links
+  puts 'Setting links'  
+  Plan.all.each do |p|
+    p.link = p.title.strip.gsub('<h1>', '').gsub('</h1>', '').gsub(' ', '-').downcase
+
+    if p.link
+      link = p.link.gsub(':', '')
+      link = link.gsub('/', '-')
+      link = link.gsub('"', '')
+      link = link.gsub("'", '')
+      link = link.gsub(',', '')
+      link = link.gsub('.', '')
+      p.link = link
+      p.save
+      puts link
+    end
+  end
+
+end
+
+puts 'Deleting plans'
+Plan.delete_all
+
 
 puts 'Harvesting plan links'
 harvest_plan_links(home_page)
@@ -65,8 +89,4 @@ harvest_plan_links(home_page)
 puts 'Iterating through links'
 puts @links.size
 link_iterator
-
-
-
-
-
+set_links
